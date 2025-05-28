@@ -1,0 +1,17 @@
+/deals-website/
+├── index.html
+├── styles/
+│   ├── main.css
+│   └── animations.css
+├── scripts/
+│   ├── main.js
+│   ├── api.js
+│   └── auto-update.js
+├── assets/
+│   ├── images/
+│   │   ├── logo.svg
+│   │   ├── placeholder-product.webp
+│   │   └── social-icons/
+│   └── fonts/
+│       └── (font files)
+└── README.md
