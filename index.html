@@ -1,83 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DealsNTools</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2723598580105993" crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #111827; color: #f3f4f6; }
-    .card { background-color: #1f2937; border-radius: 1rem; padding: 1rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); transition: all 0.3s; }
-    .card:hover { box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
-  </style>
+  <title>DealsNtools</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <script defer src="scripts/auto-update.js"></script>
+  <script defer src="scripts/main.js"></script>
 </head>
-<body class="font-sans leading-relaxed tracking-wide flex flex-col">
-  <div class="container mx-auto px-4 py-6">
-    <h1 class="text-4xl font-bold text-center mb-6">🔥 Featured Deal</h1>
-    <div id="featured-deal" class="card mb-6"></div>
+<body class="light">
+  <header>
+    <h1>DealsNtools</h1>
+    <button id="theme-toggle">🌓 Toggle Theme</button>
+  </header>
 
-    <h2 class="text-2xl font-semibold mb-2">🏷 Trending Tags</h2>
-    <div id="trending-tags" class="flex flex-wrap gap-2 mb-6"></div>
+  <main>
+    <section id="featured-deal"></section>
+    <section id="trending-tags"></section>
+    <section id="product-list">Loading deals...</section>
+    <section id="subscribe">
+      <h2>Subscribe for Updates</h2>
+      <form id="subscribe-form">
+        <input type="text" id="name" placeholder="Your name" required />
+        <input type="email" id="email" placeholder="Your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+  </main>
 
-    <h2 class="text-2xl font-semibold mb-2">🛍 All Deals</h2>
-    <div id="deals-list" class="grid md:grid-cols-3 gap-4"></div>
-
-    <h2 class="text-2xl font-semibold mt-10 mb-2">📬 Subscribe for Updates</h2>
-    <form id="newsletter-form" class="bg-gray-900 p-4 rounded-lg">
-      <input type="email" placeholder="Enter your email" class="w-full p-2 rounded mb-2 text-black" required>
-      <button type="submit" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Subscribe</button>
-    </form>
-  </div>
-
-  <script>
-    const sheetID = "1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU";
-    const sheetURL = `https://opensheet.elk.sh/${sheetID}/Deals`;
-
-    async function loadDeals() {
-      const res = await fetch(sheetURL);
-      const data = await res.json();
-
-      // Featured Deal
-      const featured = data[0];
-      document.getElementById("featured-deal").innerHTML = `
-        <h3 class="text-xl font-bold mb-2">${featured.Title}</h3>
-        <p class="mb-2">${featured.Description}</p>
-        <a href="${featured.Link}" class="text-blue-400 underline">Get Deal</a>
-      `;
-
-      // Trending Tags
-      const tagCount = {};
-      data.forEach(item => {
-        const tag = item.Category;
-        tagCount[tag] = (tagCount[tag] || 0) + 1;
-      });
-      const sortedTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]);
-      document.getElementById("trending-tags").innerHTML = sortedTags.slice(0, 5).map(tag => `
-        <span class="bg-blue-800 px-3 py-1 rounded-full">${tag}</span>
-      `).join("");
-
-      // All Deals
-      const dealsHTML = data.map(item => `
-        <div class="card">
-          <img src="${item["Image URL"]}" alt="${item.Title}" class="w-full h-40 object-cover rounded mb-2" />
-          <h3 class="text-lg font-semibold">${item.Title}</h3>
-          <p class="text-sm mb-1">${item.Description}</p>
-          <p class="text-yellow-400 font-bold mb-1">${item.Price}</p>
-          <a href="${item.Link}" target="_blank" class="text-blue-400 underline">View Deal</a>
-        </div>
-      `).join("");
-
-      document.getElementById("deals-list").innerHTML = dealsHTML;
-    }
-
-    document.getElementById("newsletter-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      alert("Thanks for subscribing! Newsletter feature coming soon.");
-    });
-
-    loadDeals();
-  </script>
+  <footer>
+    <p>© 2025 DealsNtools. All rights reserved.</p>
+  </footer>
 </body>
 </html>
