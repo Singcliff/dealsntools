@@ -5,31 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DealsNtools</title>
   <link rel="stylesheet" href="styles/main.css" />
-  <script defer src="scripts/auto-update.js"></script>
-  <script defer src="scripts/main.js"></script>
+  <script src="scripts/main.js" defer></script>
 </head>
-<body class="light">
-  <header>
-    <h1>DealsNtools</h1>
-    <button id="theme-toggle">🌓 Toggle Theme</button>
+<body class="dark-mode">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container flex-between">
+      <div class="logo">DealsNtools</div>
+      <input type="text" placeholder="Search for deals..." class="search-bar" />
+      <nav class="nav-links">
+        <a href="#electronics">Electronics</a>
+        <a href="#fashion">Fashion</a>
+        <a href="#home">Home</a>
+        <a href="#health">Health</a>
+        <a href="#accessories">Accessories</a>
+        <a href="#ai-tools" class="highlight">AI Tools</a>
+      </nav>
+      <button class="theme-toggle">🌓</button>
+    </div>
   </header>
 
-  <main>
-    <section id="featured-deal"></section>
-    <section id="trending-tags"></section>
-    <section id="product-list">Loading deals...</section>
-    <section id="subscribe">
-      <h2>Subscribe for Updates</h2>
-      <form id="subscribe-form">
-        <input type="text" id="name" placeholder="Your name" required />
-        <input type="email" id="email" placeholder="Your email" required />
-        <button type="submit">Subscribe</button>
-      </form>
-    </section>
-  </main>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <h1>Discover Top Deals & Innovative Tools</h1>
+      <p>Updated regularly from trusted sources</p>
+    </div>
+  </section>
 
-  <footer>
-    <p>© 2025 DealsNtools. All rights reserved.</p>
+  <!-- FEATURED DEALS -->
+  <section id="featured" class="deals-section">
+    <div class="container">
+      <h2>🔥 Featured Deals</h2>
+      <div id="featured-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY: ELECTRONICS -->
+  <section id="electronics" class="deals-section">
+    <div class="container">
+      <h2>📱 Electronics</h2>
+      <div id="electronics-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY: FASHION -->
+  <section id="fashion" class="deals-section">
+    <div class="container">
+      <h2>👗 Fashion</h2>
+      <div id="fashion-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY: HOME -->
+  <section id="home" class="deals-section">
+    <div class="container">
+      <h2>🏠 Home Essentials</h2>
+      <div id="home-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY: HEALTH -->
+  <section id="health" class="deals-section">
+    <div class="container">
+      <h2>💪 Health & Fitness</h2>
+      <div id="health-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY: ACCESSORIES -->
+  <section id="accessories" class="deals-section">
+    <div class="container">
+      <h2>🎧 Accessories</h2>
+      <div id="accessories-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- AI TOOLS SECTION -->
+  <section id="ai-tools" class="ai-section">
+    <div class="container">
+      <h2>🤖 Trending AI Tools</h2>
+      <div id="ai-container" class="card-grid"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container grid-footer">
+      <div>
+        <h4>About DealsNtools</h4>
+        <p>Your one-stop destination for the best online deals and AI tools.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#featured">Featured</a></li>
+          <li><a href="#electronics">Electronics</a></li>
+          <li><a href="#ai-tools">AI Tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: support@dealsntools.app</p>
+      </div>
+    </div>
+    <div class="copyright">© 2025 DealsNtools. All rights reserved.</div>
   </footer>
 </body>
 </html>
