@@ -1,5 +1,5 @@
 // Replace with your actual published CSV export URL
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAMPLEKEY/pub?output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPP99s6c5Rck3H7IAIkmPYByeBaf0IK9J5iI0OStYRpBHhTaPfiU2yK5rzwUBW20b6XSCwfzqeETOA/pub?output=csv';
 
 async function fetchDeals() {
   try {
