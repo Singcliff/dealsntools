@@ -48,21 +48,26 @@ fetch(sheetURL)
     container.innerHTML = '';
 
     if (data.length > 0) {
-      const featured = data[0];
-      const featuredBox = document.querySelector('.featured-box');
-      if (featuredBox) {
-        featuredBox.innerHTML = `
-          <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
-            <img src="${featured.Image}" alt="${featured.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
-            <div>
-              <h3 class="text-xl font-semibold mb-2">${featured.Title}</h3>
-              <p class="text-sm mb-2">${featured.Description}</p>
-              <div class="price text-green-600 font-bold text-lg mb-2">₹${featured.Price}</div>
-              <a href="${featured.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-            </div>
-          </div>
-        `;
-      }
+      const featured = data.find(
+  item => item.Tags?.toLowerCase().includes('featured')
+);
+
+const featuredBox = document.querySelector('.featured-box');
+if (featuredBox && featured) {
+  featuredBox.innerHTML = `
+    <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
+      <img src="${featured.Image}" alt="${featured.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+      <div>
+        <h3 class="text-xl font-semibold mb-2">${featured.Title}</h3>
+        <p class="text-sm mb-2">${featured.Description}</p>
+        <div class="price text-green-600 font-bold text-lg mb-2">₹${featured.Price}</div>
+        <a href="${featured.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+      </div>
+    </div>
+  `;
+} else if (featuredBox) {
+  featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
+}
 
       // Add trending deals
       data.slice(1).forEach(item => {
