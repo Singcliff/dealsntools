@@ -56,5 +56,5 @@ fetch(sheetURL)
   });
 }
 
-  })
+
   .catch(err => console.error('Failed to fetch deals:', err));
