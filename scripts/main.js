@@ -47,6 +47,7 @@ fetch(sheetURL)
     if (!container) return;
     container.innerHTML = '';
 
+    if (data.length > 0) {
     const featured = data.find(
   item => item.Tags?.toLowerCase().includes('featured')
 );
