@@ -15,7 +15,16 @@ document.querySelector('.search-bar')?.addEventListener('input', (e) => {
 });
 
 // Auto-fetch product deals from Google Sheet
-async function loadDeals() {
+const sheetURL = 'https://opensheet.vercel.app/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU/Deals';
+
+fetch(sheetURL)
+  .then(res => res.json())
+  .then(data => {
+    const container = document.querySelector('.deals-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    async function loadDeals() {
   const data = await fetchDealsFromSheet();
   const container = document.getElementById('dealsContainer');
   const featuredBox = document.querySelector('.featured-box');
@@ -57,5 +66,5 @@ async function loadDeals() {
 
 window.addEventListener('DOMContentLoaded', loadDeals);
 
-
-window.addEventListener('DOMContentLoaded', loadDeals);
+  })
+  .catch(err => console.error('Failed to fetch deals:', err));
