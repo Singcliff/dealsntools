@@ -1,42 +1,40 @@
 // scripts/main.js
 
-const sheetURL = 'https://docs.google.com/spreadsheets/d/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU/gviz/tq?tqx=out:json&sheet=Deals';
-const productsGrid = document.querySelector('.card-grid');
+// Theme toggle logic
+document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+});
 
-async function fetchDeals() {
-  try {
-    const res = await fetch(sheetURL);
-    const text = await res.text();
-    const json = JSON.parse(text.substring(47).slice(0, -2));
-    const rows = json.table.rows;
+// Basic search filtering
+document.querySelector('.search-bar')?.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.deal-card').forEach(card => {
+    const match = card.textContent.toLowerCase().includes(term);
+    card.style.display = match ? 'block' : 'none';
+  });
+});
 
-    productsGrid.innerHTML = '';
+// Auto-fetch product deals from Google Sheet
+const sheetURL = 'https://opensheet.vercel.app/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU/Deals';
 
-    rows.forEach(row => {
-      const [title, price, image, link, tag] = row.c.map(cell => cell?.v || '');
+fetch(sheetURL)
+  .then(res => res.json())
+  .then(data => {
+    const container = document.querySelector('.deals-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    data.forEach(item => {
       const card = document.createElement('div');
       card.className = 'deal-card';
       card.innerHTML = `
-        <a href="${link}" target="_blank">
-          <img src="${image}" alt="${title}" loading="lazy" />
-          <h3>${title}</h3>
-          <p class="price">${price}</p>
-          <span class="tag">${tag}</span>
-        </a>
+        <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" />
+        <h3>${item.Title}</h3>
+        <p>${item.Description}</p>
+        <div class="price">₹${item.Price}</div>
+        <a href="${item.Link}" target="_blank" class="btn">Buy Now</a>
       `;
-      productsGrid.appendChild(card);
+      container.appendChild(card);
     });
-  } catch (err) {
-    console.error('Failed to fetch deals:', err);
-    productsGrid.innerHTML = '<p style="color:red">Failed to load deals.</p>';
-  }
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('light-mode');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  fetchDeals();
-  document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
-});
+  })
+  .catch(err => console.error('Failed to fetch deals:', err));
