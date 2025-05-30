@@ -14,22 +14,25 @@ document.querySelector('.search-bar')?.addEventListener('input', (e) => {
   });
 });
 
-// Track expanded states for descriptions
-const expandedStates = {};
-
-// Toggle description text
-function toggleDescription(index, fullText) {
-  expandedStates[index] = !expandedStates[index];
-  const descEl = document.querySelector(`#desc-${index}`);
-  const toggleEl = document.querySelector(`#toggle-${index}`);
-
-  if (expandedStates[index]) {
-    descEl.textContent = fullText;
-    toggleEl.textContent = 'Read Less';
-  } else {
-    descEl.textContent = fullText.slice(0, 80);
-    toggleEl.textContent = 'Read More';
+// Function to show modal
+function showDescriptionModal(title, description) {
+  let modal = document.querySelector('#description-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'description-modal';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+      <div class="bg-white dark:bg-gray-900 text-black dark:text-white rounded-lg p-6 max-w-lg w-full shadow-xl relative">
+        <h2 class="text-lg font-semibold mb-2" id="modal-title"></h2>
+        <p class="text-sm mb-4" id="modal-desc"></p>
+        <button class="absolute top-2 right-3 text-gray-500 hover:text-black dark:hover:text-white text-xl" onclick="document.getElementById('description-modal').remove()">×</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
   }
+
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-desc').textContent = description;
 }
 
 // Auto-fetch product deals from Google Sheet
@@ -59,7 +62,7 @@ fetch(sheetURL)
         `;
       }
 
-      // Skip first item for Trending Deals
+      // Skip first item in Trending Deals
       data.slice(1).forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'deal-card bg-gray-100 dark:bg-gray-900 p-4 rounded shadow flex flex-col justify-between';
@@ -71,9 +74,9 @@ fetch(sheetURL)
           <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain mb-2 rounded" />
           <h3 class="font-semibold text-black dark:text-white text-sm mb-1">${item.Title}</h3>
           <p class="text-sm text-gray-700 dark:text-gray-300">
-            <span id="desc-${index}">${shortDesc}</span>
+            ${shortDesc}${fullDesc.length > 80 ? '...' : ''}
             ${fullDesc.length > 80
-              ? `<button id="toggle-${index}" class="text-blue-600 text-xs ml-1" onclick="toggleDescription(${index}, \`${fullDesc.replace(/`/g, '\\`')}\`)">Read More</button>`
+              ? `<button class="text-blue-600 text-xs ml-1 underline" onclick="showDescriptionModal('${item.Title.replace(/'/g, "\\'")}', \`${fullDesc.replace(/`/g, '\\`')}\`)">Read More</button>`
               : ''}
           </p>
           <div class="price text-green-600 font-bold mt-2">₹${item.Price}</div>
