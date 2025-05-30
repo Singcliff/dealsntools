@@ -15,8 +15,6 @@ document.querySelector('.search-bar')?.addEventListener('input', (e) => {
 });
 
 // Auto-fetch product deals from Google Sheet
-const sheetURL = 'https://opensheet.vercel.app/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU/Deals';
-
 async function loadDeals() {
   const data = await fetchDealsFromSheet();
   const container = document.getElementById('dealsContainer');
@@ -26,7 +24,7 @@ async function loadDeals() {
   container.innerHTML = '';
   featuredBox.innerHTML = '';
 
-    if (data.length > 0) {
+  if (data.length > 0) {
     // 🟨 Show first deal as featured
     const featured = data[0];
     featuredBox.innerHTML = `
@@ -56,5 +54,8 @@ async function loadDeals() {
     });
   }
 }
+
+window.addEventListener('DOMContentLoaded', loadDeals);
+
 
 window.addEventListener('DOMContentLoaded', loadDeals);
