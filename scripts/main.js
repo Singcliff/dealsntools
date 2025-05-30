@@ -48,7 +48,8 @@ fetch(sheetURL)
     container.innerHTML = '';
 
 // Try to find the featured deal by Tags or fallback to first item
-let featured = data.find(item =>
+if (data.length > 0) {   
+  let featured = data.find(item =>
   (item.Tags || item.Category || '').toLowerCase().includes('featured')
 );
 
@@ -57,7 +58,7 @@ if (!featured) {
   featured = data[0]; // Fallback to first item
 }
  
-if (data.length > 0) {   
+
   const featured = data.find(
   item => item.Tags?.toLowerCase().includes('featured')
 );
