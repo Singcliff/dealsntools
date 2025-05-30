@@ -43,67 +43,63 @@ const sheetURL = 'https://opensheet.vercel.app/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_
 fetch(sheetURL)
   .then(res => res.json())
   .then(data => {
-    const container = document.querySelector('.deals-container');
-    if (!container) return;
-    container.innerHTML = '';
+    if (data.length > 0) {
+      const container = document.querySelector('.deals-container');
+      if (!container) return;
+      container.innerHTML = '';
 
-// Try to find the featured deal by Tags or fallback to first item
-if (data.length > 0) {   
-  let featured = data.find(item =>
-  (item.Tags || item.Category || '').toLowerCase().includes('featured')
-);
+      // ✅ Find featured deal using tag or fallback to first
+      let featured = data.find(item =>
+        (item.Tags || item.Category || '').toLowerCase().includes('featured')
+      );
 
-if (!featured) {
-  console.warn("⚠️ No featured deal found by tag. Using first item as fallback.");
-  featured = data[0]; // Fallback to first item
-}
- 
+      if (!featured) {
+        console.warn("⚠️ No featured deal found by tag. Using first item as fallback.");
+        featured = data[0];
+      }
 
-  const featured = data.find(
-  item => item.Tags?.toLowerCase().includes('featured')
-);
+      // ✅ Display featured
+      const featuredBox = document.querySelector('.featured-box');
+      if (featuredBox) {
+        featuredBox.innerHTML = `
+          <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
+            <img src="${featured.Image}" alt="${featured.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+            <div>
+              <h3 class="text-xl font-semibold mb-2">${featured.Title}</h3>
+              <p class="text-sm mb-2">${featured.Description}</p>
+              <div class="price text-green-600 font-bold text-lg mb-2">₹${featured.Price}</div>
+              <a href="${featured.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+            </div>
+          </div>
+        `;
+      }
 
-const featuredBox = document.querySelector('.featured-box');
-if (featuredBox && featured) {
-  featuredBox.innerHTML = `
-    <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
-      <img src="${featured.Image}" alt="${featured.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
-      <div>
-        <h3 class="text-xl font-semibold mb-2">${featured.Title}</h3>
-        <p class="text-sm mb-2">${featured.Description}</p>
-        <div class="price text-green-600 font-bold text-lg mb-2">₹${featured.Price}</div>
-        <a href="${featured.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-      </div>
-    </div>
-  `;
-} else if (featuredBox) {
-  featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
-}
-
-      // Add trending deals
-      data.slice(1).forEach(item => {
-  const card = document.createElement('div');
-  card.className = 'deal-card';
-  card.innerHTML = `
-    <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" />
-    <h3>${item.Title}</h3>
-    <p>
-      ${item.Description?.slice(0, 80)}...
-      <button onclick="showPopup({ 
-        title: \`${item.Title}\`, 
-        description: \`${item.Description}\`, 
-        image: \`${item.Image}\`, 
-        price: \`${item.Price}\` 
-      })" class="text-blue-600 text-xs ml-1 underline">
-        Read More
-      </button>
-    </p>
-    <div class="price">₹${item.Price}</div>
-    <a href="${item.Link}" target="_blank" class="btn">Buy Now</a>
-  `;
-  container.appendChild(card);
-});
-
+      // ✅ Add trending deals (excluding featured)
+      data
+        .filter(item => item !== featured)
+        .forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'deal-card';
+          card.innerHTML = `
+            <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" />
+            <h3>${item.Title}</h3>
+            <p>
+              ${item.Description?.slice(0, 80)}...
+              <button onclick="showPopup({ 
+                title: \`${item.Title}\`, 
+                description: \`${item.Description}\`, 
+                image: \`${item.Image}\`, 
+                price: \`${item.Price}\` 
+              })" class="text-blue-600 text-xs ml-1 underline">
+                Read More
+              </button>
+            </p>
+            <div class="price">₹${item.Price}</div>
+            <a href="${item.Link}" target="_blank" class="btn">Buy Now</a>
+          `;
+          container.appendChild(card);
+        });
     }
   })
   .catch(err => console.error('Failed to fetch deals:', err));
+
