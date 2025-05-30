@@ -29,14 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to be used globally
 function showPopup({ title, description, image, price }) {
-  const modal = document.getElementById('popup-modal');
-  if (!modal) return;
-
-  document.getElementById('popup-title').textContent = title;
-  document.getElementById('popup-description').textContent = description;
-  document.getElementById('popup-image').src = image;
-  document.getElementById('popup-image').alt = title;
-  document.getElementById('popup-price').textContent = `₹${price}`;
-
-  modal.classList.remove('hidden');
+  document.getElementById('popupTitle').textContent = title;
+  document.getElementById('popupDescription').textContent = description;
+  document.getElementById('popupImage').src = image;
+  document.getElementById('popupPrice').textContent = `₹${price}`;
+  document.getElementById('popupModal').classList.remove('hidden');
 }
+
+function closePopup() {
+  document.getElementById('popupModal').classList.add('hidden');
+}
+
