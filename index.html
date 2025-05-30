@@ -2,124 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DealsNtools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DealsNtools - Latest Deals & AI Tools</title>
   <link rel="stylesheet" href="styles/main.css" />
-  <script src="scripts/main.js" defer></script>
 </head>
-<body class="dark-mode">
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container flex-between">
-      <div class="logo">
-        <img src="assets/logo.png" alt="DealsNtools Logo" class="logo-img">
-        <span>DealsNtools</span>
-      </div>
-      <nav class="nav-links">
-        <a href="#featured">Featured</a>
-        <a href="#electronics">Electronics</a>
-        <a href="#fashion">Fashion</a>
-        <a href="#home">Home</a>
-        <a href="#health">Health</a>
-        <a href="#accessories">Accessories</a>
-        <a href="#ai-tools" class="highlight">AI Tools</a>
-      </nav>
-      <div class="header-actions">
-        <input type="text" placeholder="Search for deals..." class="search-bar" />
-        <button class="theme-toggle">🌓</button>
-      </div>
-    </div>
+<body>
+  <header class="main-header">
+    <div class="logo">DealsNtools</div>
+    <nav class="navigation">
+      <a href="#home">Home</a>
+      <a href="#shopping">Shopping Deals</a>
+      <a href="#ai-tools">AI Tools</a>
+      <a href="#newsletter">Subscribe</a>
+    </nav>
+    <div class="theme-toggle">🌓</div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <div class="container">
-      <h1>Discover Top Deals & Innovative Tools</h1>
-      <p>Updated regularly from trusted sources</p>
-    </div>
+  <section class="search-section">
+    <input type="text" placeholder="Search for deals..." class="search-bar" />
   </section>
 
-  <!-- FEATURED DEALS -->
-  <section id="featured" class="deals-section">
-    <div class="container">
-      <h2>🔥 Featured Deals</h2>
-      <div id="featured-container" class="card-grid"></div>
-    </div>
-  </section>
+  <main>
+    <section class="featured-deal">
+      <h2>Featured Deal</h2>
+      <div class="featured-placeholder">✨ Your top deal will appear here!</div>
+    </section>
 
-  <!-- CATEGORY: ELECTRONICS -->
-  <section id="electronics" class="deals-section">
-    <div class="container">
-      <h2>📱 Electronics</h2>
-      <div id="electronics-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- CATEGORY: FASHION -->
-  <section id="fashion" class="deals-section">
-    <div class="container">
-      <h2>👗 Fashion</h2>
-      <div id="fashion-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- CATEGORY: HOME -->
-  <section id="home" class="deals-section">
-    <div class="container">
-      <h2>🏠 Home Essentials</h2>
-      <div id="home-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- CATEGORY: HEALTH -->
-  <section id="health" class="deals-section">
-    <div class="container">
-      <h2>💪 Health & Fitness</h2>
-      <div id="health-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- CATEGORY: ACCESSORIES -->
-  <section id="accessories" class="deals-section">
-    <div class="container">
-      <h2>🎧 Accessories</h2>
-      <div id="accessories-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- AI TOOLS SECTION -->
-  <section id="ai-tools" class="ai-section">
-    <div class="container">
-      <h2>🤖 Trending AI Tools</h2>
-      <div id="ai-container" class="card-grid"></div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container grid-footer">
-      <div>
-        <h4>About DealsNtools</h4>
-        <p>Your one-stop destination for the best online deals and AI tools.</p>
+    <section class="deals-wrapper">
+      <h2>Trending Deals</h2>
+      <div class="deals-container">
+        <!-- Product cards from Google Sheet will be rendered here -->
       </div>
-      <div>
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#featured">Featured</a></li>
-          <li><a href="#electronics">Electronics</a></li>
-          <li><a href="#fashion">Fashion</a></li>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#health">Health</a></li>
-          <li><a href="#accessories">Accessories</a></li>
-          <li><a href="#ai-tools">AI Tools</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <p>Email: support@dealsntools.app</p>
+    </section>
+
+    <section id="newsletter" class="newsletter-box">
+      <h2>Subscribe for Updates</h2>
+      <form>
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 DealsNtools. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">About</a> |
+        <a href="#">Contact</a> |
+        <a href="#">Privacy</a>
       </div>
     </div>
-    <div class="copyright">© 2025 DealsNtools. All rights reserved.</div>
   </footer>
+
+  <script src="scripts/main.js"></script>
 </body>
 </html>
