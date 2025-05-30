@@ -65,40 +65,29 @@ fetch(sheetURL)
       }
 
       // Add trending deals
-      data.slice(1).forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'deal-card bg-gray-100 dark:bg-gray-900 p-4 rounded shadow flex flex-col justify-between';
+      data.slice(1).forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'deal-card';
+  card.innerHTML = `
+    <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" />
+    <h3>${item.Title}</h3>
+    <p>
+      ${item.Description?.slice(0, 80)}...
+      <button onclick="showPopup({ 
+        title: \`${item.Title}\`, 
+        description: \`${item.Description}\`, 
+        image: \`${item.Image}\`, 
+        price: \`${item.Price}\` 
+      })" class="text-blue-600 text-xs ml-1 underline">
+        Read More
+      </button>
+    </p>
+    <div class="price">₹${item.Price}</div>
+    <a href="${item.Link}" target="_blank" class="btn">Buy Now</a>
+  `;
+  container.appendChild(card);
+});
 
-        const shortDesc = item.Description?.slice(0, 80) || '';
-        const fullDesc = item.Description || '';
-
-        const readMoreBtn = document.createElement('button');
-        readMoreBtn.textContent = 'Read More';
-        readMoreBtn.className = 'text-blue-600 text-xs ml-1 underline';
-        readMoreBtn.addEventListener('click', () => {
-          showDescriptionModal(item.Title, fullDesc);
-        });
-
-        const descPara = document.createElement('p');
-        descPara.className = 'text-sm text-gray-700 dark:text-gray-300';
-        descPara.textContent = shortDesc;
-        if (fullDesc.length > 80) {
-          descPara.textContent += '... ';
-          descPara.appendChild(readMoreBtn);
-        }
-
-        card.innerHTML = `
-          <img src="${item.Image || '#'}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain mb-2 rounded" />
-          <h3 class="font-semibold text-black dark:text-white text-sm mb-1">${item.Title}</h3>
-        `;
-        card.appendChild(descPara);
-        card.innerHTML += `
-          <div class="price text-green-600 font-bold mt-2">₹${item.Price}</div>
-          <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm mt-2">Buy Now</a>
-        `;
-
-        container.appendChild(card);
-      });
     }
   })
   .catch(err => console.error('Failed to fetch deals:', err));
