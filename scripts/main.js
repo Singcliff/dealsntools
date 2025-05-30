@@ -58,6 +58,3 @@ async function loadDeals() {
 }
 
 window.addEventListener('DOMContentLoaded', loadDeals);
-
-  })
-  .catch(err => console.error('Failed to fetch deals:', err));
