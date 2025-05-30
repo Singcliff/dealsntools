@@ -76,29 +76,30 @@ fetch(sheetURL)
 
       // Add all non-featured items to the trending deals container
       data
-        .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
-        .forEach(d => {
-          const card = document.createElement('div');
-          card.className = 'deal-card';
-          card.innerHTML = `
-            <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
-            <h3>${d.Title}</h3>
-            <p>
-              ${d.Description?.slice(0, 80)}...
-              <button onclick="showPopup({ 
-                title: \`${d.Title}\`, 
-                description: \`${d.Description}\`, 
-                image: \`${d.Image}\`, 
-                price: \`${d.Price}\` 
-              })" class="text-blue-600 text-xs ml-1 underline">
-                Read More
-              </button>
-            </p>
-            <div class="price">₹${d.Price}</div>
-            <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
-          `;
-          container.appendChild(card);
-        });
+  .filter((_, idx) => !(featuredItems.includes(data[idx]) && idx === data.indexOf(featuredItems[0])))
+  .forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'deal-card';
+    card.innerHTML = `
+      <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
+      <h3>${d.Title}</h3>
+      <p>
+        ${d.Description?.slice(0, 80)}...
+        <button onclick="showPopup({ 
+          title: \`${d.Title}\`, 
+          description: \`${d.Description}\`, 
+          image: \`${d.Image}\`, 
+          price: \`${d.Price}\` 
+        })" class="text-blue-600 text-xs ml-1 underline">
+          Read More
+        </button>
+      </p>
+      <div class="price">₹${d.Price}</div>
+      <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
+    `;
+    container.appendChild(card);
+  });
+
     }
   })
   .catch(err => console.error('Failed to fetch deals:', err));
