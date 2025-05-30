@@ -28,15 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to be used globally
-function showPopup({ title, description, image, price }) {
+window.showPopup = function({ title, description, image, price }) {
   document.getElementById('popupTitle').textContent = title;
   document.getElementById('popupDescription').textContent = description;
   document.getElementById('popupImage').src = image;
   document.getElementById('popupPrice').textContent = `₹${price}`;
   document.getElementById('popupModal').classList.remove('hidden');
-}
+  document.getElementById('popupModal').classList.add('flex');
+};
 
-function closePopup() {
+window.closePopup = function() {
+  document.getElementById('popupModal').classList.remove('flex');
   document.getElementById('popupModal').classList.add('hidden');
-}
-
+};
