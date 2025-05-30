@@ -1,3 +1,4 @@
+
 // scripts/main.js
 
 // Theme toggle logic
