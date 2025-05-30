@@ -44,7 +44,8 @@ fetch(sheetURL)
   .then(res => res.json())
   .then(data => {
   const container = document.querySelector('.deals-container');
-  const featuredBox = document.querySelector('.featured-box');
+  const featuredBox = document.querySelector('.featured-placeholder');
+
   if (!container || !featuredBox) return;
 
   container.innerHTML = '';
