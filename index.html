@@ -57,6 +57,15 @@
 
   <script src="scripts/main.js"></script>
   <script src="scripts/popup.js"></script>
+<div id="popupModal" class="modal hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="modal-content bg-white dark:bg-gray-800 p-6 rounded shadow-lg max-w-sm w-full text-black dark:text-white relative">
+    <button onclick="closePopup()" class="absolute top-2 right-3 text-xl font-bold text-gray-600 hover:text-black">×</button>
+    <img id="popupImage" src="" alt="Product" class="w-full h-48 object-contain mb-2" />
+    <h3 id="popupTitle" class="text-lg font-semibold"></h3>
+    <p id="popupDescription" class="mt-2 text-sm"></p>
+    <p id="popupPrice" class="mt-2 font-bold text-green-600"></p>
+  </div>
+</div>
 
 </body>
 </html>
