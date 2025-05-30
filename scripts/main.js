@@ -51,22 +51,22 @@ fetch(sheetURL)
   featuredBox.innerHTML = '';
 
   if (data.length > 0) {
-    // Extract featured items
     const featuredItems = data.filter(item =>
       (item.Tags || item.Category || '').toLowerCase().includes('featured')
     );
 
-    // Show the first featured item
+    let featuredItem = null;
+
     if (featuredItems.length > 0) {
-      const featured = featuredItems[0];
+      featuredItem = featuredItems[0];
       featuredBox.innerHTML = `
         <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
-          <img src="${featured.Image}" alt="${featured.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+          <img src="${featuredItem.Image}" alt="${featuredItem.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
           <div>
-            <h3 class="text-xl font-semibold mb-2">${featured.Title}</h3>
-            <p class="text-sm mb-2">${featured.Description}</p>
-            <div class="price text-green-600 font-bold text-lg mb-2">₹${featured.Price}</div>
-            <a href="${featured.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+            <h3 class="text-xl font-semibold mb-2">${featuredItem.Title}</h3>
+            <p class="text-sm mb-2">${featuredItem.Description}</p>
+            <div class="price text-green-600 font-bold text-lg mb-2">₹${featuredItem.Price}</div>
+            <a href="${featuredItem.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
           </div>
         </div>
       `;
@@ -74,9 +74,9 @@ fetch(sheetURL)
       featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
     }
 
-    // Show all items except the one already shown in featured
+    // Render all non-featured OR all except the shown featured item
     data
-      .filter(item => item !== featuredItems[0])
+      .filter(item => !featuredItem || item.Title !== featuredItem.Title)
       .forEach(item => {
         const card = document.createElement('div');
         card.className = 'deal-card';
