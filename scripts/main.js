@@ -56,7 +56,9 @@ if (!featured) {
   console.warn("⚠️ No featured deal found by tag. Using first item as fallback.");
   featured = data[0]; // Fallback to first item
 }
-    const featured = data.find(
+ 
+if (data.length > 0) {   
+  const featured = data.find(
   item => item.Tags?.toLowerCase().includes('featured')
 );
 
