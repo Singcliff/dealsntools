@@ -65,19 +65,22 @@ fetch(sheetURL)
 
         featuredItems.forEach(item => {
           const slide = document.createElement('div');
-          slide.className = 'swiper-slide';
+          slide.className = 'swiper-slide flex h-full';
           slide.innerHTML = `
-            <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4 h-full min-h-[280px]">
-
-              <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
-              <div>
-                <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
-                <p class="text-sm mb-2">${item.Description}</p>
-                <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-                <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-              </div>
-            </div>
-          `;
+  <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4 w-full h-full">
+    <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+    <div class="flex flex-col justify-between">
+      <div>
+        <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
+        <p class="text-sm mb-2">${item.Description}</p>
+      </div>
+      <div>
+        <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
+        <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+      </div>
+    </div>
+  </div>
+`;
           swiperWrapper.appendChild(slide);
         });
 
