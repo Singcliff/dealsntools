@@ -62,9 +62,9 @@ fetch(sheetURL)
     if (featuredItems.length > 0) {
       const swiperWrapper = document.querySelector('.featured-box .swiper-wrapper');
 
-    if (featuredItems.length > 0 && swiperWrapper) {
+    /*!--if (featuredItems.length > 0 && swiperWrapper) {
       swiperWrapper.innerHTML = ''; // Clear any existing slides
-    
+    --*/
       featuredItems.forEach(item => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
