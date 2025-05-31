@@ -91,16 +91,16 @@ fetch(sheetURL)
           </div>
         `;
 
-        new Swiper('.swiper-container', {
+new Swiper('.swiper-container', {
   loop: true,
   spaceBetween: 16,
+  autoplay: {
+    delay: 3000, // Slide every 3 seconds
+    disableOnInteraction: false
+  },
   pagination: {
     el: '.swiper-pagination',
     clickable: true
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev'
   },
   breakpoints: {
     640: {
@@ -111,7 +111,7 @@ fetch(sheetURL)
     }
   }
 });
-
+        
       } else {
         featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
       }
