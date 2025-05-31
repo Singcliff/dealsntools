@@ -179,7 +179,10 @@ body.light-mode .deal-card .btn {
   align-items: center;
   min-height: 200px;
 }
-
+.featured-card h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
 /*.featured-card {
   display: flex;
   gap: 1rem;
@@ -194,10 +197,6 @@ body.light-mode .deal-card .btn {
   border-radius: 0.5rem;
 }
 */
-.featured-card h3 {
-  font-size: 1.2rem;
-  margin: 0;
-}
 
 body.light-mode .featured-box {
   background-color: #e9e9e9;
@@ -206,9 +205,9 @@ body.light-mode .featured-box {
 /* ---Slider Formatting--- */
 
 .featured-card {
-  min-height: 200px;
+  min-height: 220px;
   max-width: 100%;
-  display: flex;
+  display: flex;  
   flex-direction: column;
   justify-content: space-between;
 }
@@ -220,7 +219,7 @@ body.light-mode .featured-box {
 }
 
 .featured-card img {
-  max-height: 150px;
+  max-height: 200px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
