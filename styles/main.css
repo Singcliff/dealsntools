@@ -180,7 +180,7 @@ body.light-mode .deal-card .btn {
   min-height: 200px;
 }
 
-.featured-card {
+/*.featured-card {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -193,7 +193,7 @@ body.light-mode .deal-card .btn {
   height: auto;
   border-radius: 0.5rem;
 }
-
+*/
 .featured-card h3 {
   font-size: 1.2rem;
   margin: 0;
@@ -203,7 +203,7 @@ body.light-mode .featured-box {
   background-color: #e9e9e9;
 }
 
-<!--Slider-->
+/* ---Slider Formatting--- */
 
 .featured-card {
   min-height: 200px;
