@@ -199,7 +199,7 @@ body.light-mode .featured-box {
   border-radius: 0.5rem;
   padding: 1rem;
   text-align: center;
-  height: 280px;
+  height: 100%;
 }
 
 .dark .featured-card {
