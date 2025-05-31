@@ -59,62 +59,52 @@ fetch(sheetURL)
         (d.Tags || d.Category || '').toLowerCase().includes('featured')
       );
 
-      if (featuredItems.length > 0) {
-        const swiperWrapper = document.createElement('div');
-        swiperWrapper.className = 'swiper-wrapper';
+    if (featuredItems.length > 0) {
+      const swiperWrapper = document.querySelector('.featured-box .swiper-wrapper');
 
-        featuredItems.forEach(item => {
-          const slide = document.createElement('div');
-          slide.className = 'swiper-slide';
-          slide.innerHTML = `
-    <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
-      <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
-      <div class="flex flex-col justify-between">
-      <div>
-        <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
-        <p class="text-sm mb-2">${item.Description}</p>
-      </div>
-      <div>
-        <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-        <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-      </div>
-    </div>
-  </div>
-`;
-          swiperWrapper.appendChild(slide);
-        });
-
-        featuredBox.innerHTML = `
-          <div class="swiper-container">
-            <div class="swiper-wrapper">
-              ${swiperWrapper.innerHTML}
+    if (featuredItems.length > 0 && swiperWrapper) {
+      swiperWrapper.innerHTML = ''; // Clear any existing slides
+    
+      featuredItems.forEach(item => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
+            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+            <div>
+              <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
+              <p class="text-sm mb-2">${item.Description}</p>
+              <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
+              <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
             </div>
-            <div class="swiper-pagination"></div>
           </div>
         `;
-
-new Swiper('.swiper-container', {
-  loop: true,
-  spaceBetween: 16,
-  autoplay: {
-    delay: 3000, // Slide every 3 seconds
-    disableOnInteraction: false
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true
-  },
-  breakpoints: {
-    640: {
-      slidesPerView: 2
-    },
-    1024: {
-      slidesPerView: 3
+        swiperWrapper.appendChild(slide);
+      });
+    
+      new Swiper('.mySwiper', {
+        loop: true,
+        spaceBetween: 16,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 2
+          },
+          1024: {
+            slidesPerView: 3
+          }
+        }
+      });
     }
-  }
-});
-        
-      } else {
+      
+      else {
         featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
       }
 
