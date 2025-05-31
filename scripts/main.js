@@ -83,9 +83,9 @@ fetch(sheetURL)
       },
       pagination: {
         el: '.swiper-pagination',
-        clickable: false,
+        clickable: false, navigation: true,
       },
-      navigation: true,
+      
       slidesPerView: 2,
       spaceBetween: 20,
       breakpoints: {
