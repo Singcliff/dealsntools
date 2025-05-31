@@ -79,19 +79,28 @@ fetch(sheetURL)
       featuredWrapper.appendChild(slide);
     });
 
-    new Swiper('.mySwiper', {
-      loop: true,
-      autoplay: {
+new Swiper('.swiper-container', {
+  loop: true,
+  spaceBetween: 16,
+  autoplay: {
         delay: 4000,
         disableOnInteraction: false,
       },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: false,
-      },
-      navigation: false,
-    });
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true
+  },
+  navigation: false,
 
+breakpoints: {
+    640: {
+      slidesPerView: 2
+    },
+    1024: {
+      slidesPerView: 3
+    }
+  }
+}); 
     data
       .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
       .forEach(d => {
