@@ -82,27 +82,27 @@ fetch(sheetURL)
         swiperWrapper.appendChild(slide);
       });
     
-      new Swiper('.mySwiper', {
-        loop: true,
-        spaceBetween: 16,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true
-        },
-        breakpoints: {
-          640: {
-            slidesPerView: 2
-          },
-          1024: {
-            slidesPerView: 3
-          }
-        }
-      });
+      new Swiper('.swiper-container', {
+  loop: true,
+  spaceBetween: 16,
+  autoplay: {
+    delay: 3000, // Slide every 3 seconds
+    disableOnInteraction: false
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true
+  },
+  breakpoints: {
+    640: {
+      slidesPerView: 2
+    },
+    1024: {
+      slidesPerView: 3
     }
+  }
+});
+}
       
       else {
         featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
