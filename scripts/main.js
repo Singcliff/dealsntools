@@ -60,15 +60,17 @@ fetch(sheetURL)
 
     featuredItems.forEach(item => {
       const slide = document.createElement('div');
-      slide.className = 'swiper-slide flex flex-col';
+      slide.className = 'swiper-slide';
       slide.innerHTML = `
-        <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col justify-between h-full">
-          <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-48 object-contain rounded mb-4" />
-          <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
-          <p class="text-sm mb-2 flex-grow">${item.Description}</p>
-          <div>
-            <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-            <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+        <div class="featured-card h-full flex flex-col bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md">
+          <div class="flex flex-col h-full">
+            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-48 object-contain rounded mb-4" />
+            <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
+            <p class="text-sm mb-2 flex-grow">${item.Description}</p>
+            <div>
+              <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
+              <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+            </div>
           </div>
         </div>
       `;
@@ -83,9 +85,9 @@ fetch(sheetURL)
       },
       pagination: {
         el: '.swiper-pagination',
-        clickable: false, 
+        clickable: false,
       },
-      navigation: false, 
+      navigation: false,
       slidesPerView: 2,
       spaceBetween: 20,
       breakpoints: {
