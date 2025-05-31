@@ -177,7 +177,7 @@ body.light-mode .deal-card .btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
+  min-height: 220px;
 }
 .featured-card h3 {
   font-size: 1.2rem;
