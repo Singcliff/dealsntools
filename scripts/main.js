@@ -65,9 +65,10 @@ fetch(sheetURL)
 
         featuredItems.forEach(item => {
           const slide = document.createElement('div');
-          slide.className = 'swiper-slide';
+          slide.className = 'swiper-slide h-full';
           slide.innerHTML = `
-            <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
+            <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4 h-full min-h-[280px]">
+
               <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
               <div>
                 <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
