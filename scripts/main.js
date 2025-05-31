@@ -48,97 +48,73 @@ fetch(sheetURL)
   .then(res => res.json())
   .then(data => {
     const container = document.querySelector('.deals-container');
-    const featuredBox = document.querySelector('.featured-box');
-    if (!container || !featuredBox) return;
+    const featuredWrapper = document.querySelector('.featured-box .swiper-wrapper');
+    if (!container || !featuredWrapper) return;
 
     container.innerHTML = '';
-    featuredBox.innerHTML = `
-    <div class="swiper-container">
-    <div class="swiper-wrapper">
-      ${swiperWrapper.innerHTML}
-    </div>
-    <div class="swiper-pagination"></div>
-  </div>
-`;
+    featuredWrapper.innerHTML = '';
 
-    if (data.length > 0) {
-      const featuredItems = data.filter(d =>
-        (d.Tags || d.Category || '').toLowerCase().includes('featured')
-      );
+    const featuredItems = data.filter(d =>
+      (d.Tags || d.Category || '').toLowerCase().includes('featured')
+    );
 
-    if (featuredItems.length > 0) {
-const swiperWrapper = document.querySelector('.featured-box .swiper-wrapper');
-
-if (featuredItems.length > 0 && swiperWrapper) {
-  swiperWrapper.innerHTML = ''; // Clear any existing slides
-
-  featuredItems.forEach(item => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.innerHTML = `
-      <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4">
-        <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
-        <div>
-          <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
-          <p class="text-sm mb-2">${item.Description}</p>
-          <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-          <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+    featuredItems.forEach(item => {
+      const slide = document.createElement('div');
+      slide.className = 'swiper-slide flex h-full';
+      slide.innerHTML = `
+        <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md flex flex-col sm:flex-row gap-4 w-full h-full">
+          <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full sm:w-48 object-contain rounded" />
+          <div class="flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-semibold mb-2">${item.Title}</h3>
+              <p class="text-sm mb-2">${item.Description}</p>
+            </div>
+            <div>
+              <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
+              <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+            </div>
+          </div>
         </div>
-      </div>
-    `;
-    swiperWrapper.appendChild(slide);
-  });
+      `;
+      featuredWrapper.appendChild(slide);
+    });
 
-  new Swiper('.mySwiper', {
-    loop: true,
-    spaceBetween: 16,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    },
-    breakpoints: {
-      640: {
-        slidesPerView: 2
+    new Swiper('.mySwiper', {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
       },
-      1024: {
-        slidesPerView: 3
-      }
-    }
-  });
-}
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: false,
+      },
+      navigation: false,
+    });
 
-    else {
-        featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
-      }
-
-      data
-        .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
-        .forEach(d => {
-          const card = document.createElement('div');
-          card.className = 'deal-card';
-          card.innerHTML = `
-            <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
-            <h3>${d.Title}</h3>
-            <p>
-              ${d.Description?.slice(0, 80)}...
-              <button onclick="showPopup({ 
-                title: \`${d.Title}\`, 
-                description: \`${d.Description}\`, 
-                image: \`${d.Image}\`, 
-                price: \`${d.Price}\` 
-              })" class="text-blue-600 text-xs ml-1 underline">
-                Read More
-              </button>
-            </p>
-            <div class="price">₹${d.Price}</div>
-            <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
-          `;
-          container.appendChild(card);
-        });
-    }
+    data
+      .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
+      .forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'deal-card';
+        card.innerHTML = `
+          <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
+          <h3>${d.Title}</h3>
+          <p>
+            ${d.Description?.slice(0, 80)}...
+            <button onclick="showPopup({ 
+              title: \`${d.Title}\`, 
+              description: \`${d.Description}\`, 
+              image: \`${d.Image}\`, 
+              price: \`${d.Price}\` 
+            })" class="text-blue-600 text-xs ml-1 underline">
+              Read More
+            </button>
+          </p>
+          <div class="price">₹${d.Price}</div>
+          <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
+        `;
+        container.appendChild(card);
+      });
   })
   .catch(err => console.error('Failed to fetch deals:', err));
