@@ -52,7 +52,14 @@ fetch(sheetURL)
     if (!container || !featuredBox) return;
 
     container.innerHTML = '';
-    featuredBox.innerHTML = '';
+    featuredBox.innerHTML = `
+    <div class="swiper-container">
+    <div class="swiper-wrapper">
+      ${swiperWrapper.innerHTML}
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+`;
 
     if (data.length > 0) {
       const featuredItems = data.filter(d =>
@@ -62,9 +69,9 @@ fetch(sheetURL)
     if (featuredItems.length > 0) {
       const swiperWrapper = document.querySelector('.featured-box .swiper-wrapper');
 
-    /*!--if (featuredItems.length > 0 && swiperWrapper) {
+    if (featuredItems.length > 0 && swiperWrapper) {
       swiperWrapper.innerHTML = ''; // Clear any existing slides
-    --*/
+    
       featuredItems.forEach(item => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
@@ -82,7 +89,7 @@ fetch(sheetURL)
         swiperWrapper.appendChild(slide);
       });
     
-      new Swiper('.swiper-container', {
+new Swiper('.swiper-container', {
   loop: true,
   spaceBetween: 16,
   autoplay: {
@@ -102,8 +109,9 @@ fetch(sheetURL)
     }
   }
 });
-      
-      else {
+
+  }
+    else {
         featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
       }
 
