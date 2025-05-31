@@ -102,7 +102,6 @@ fetch(sheetURL)
     }
   }
 });
-}
       
       else {
         featuredBox.innerHTML = `<p class="text-center text-sm text-gray-500">✨ Your top deal will appear here!</p>`;
