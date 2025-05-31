@@ -55,10 +55,7 @@ fetch(sheetURL)
     const featuredItems = data.filter(d =>
   (d.Tags || d.Category || '').toLowerCase().includes('featured')
 );
-
-    let featuredItem = null;
-
-    if (featuredItems.length > 0) {
+  if (featuredItems.length > 0) {
   featuredBox.innerHTML = `
     <div class="swiper-wrapper">
       ${featuredItems.map(item => `
