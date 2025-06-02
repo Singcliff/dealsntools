@@ -49,8 +49,8 @@ body.light-mode {
 
 .search-bar {
   width: 100%;
-  max-width: 500px;
-  padding: 0.6rem 1rem;
+  max-width: 300px;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
   font-size: 1rem;
