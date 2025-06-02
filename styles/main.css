@@ -49,7 +49,7 @@ body.light-mode {
 
 .search-bar {
   width: 100%;
-  max-width: 100px;
+  max-width: 500px;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
@@ -64,7 +64,7 @@ body.light-mode {
 .featured-placeholder {
   margin-top: 1rem;
   background: #262626;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 10px;
 }
 
