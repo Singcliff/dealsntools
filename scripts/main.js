@@ -68,7 +68,7 @@ fetch(sheetURL)
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
       slide.innerHTML = `
-        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md min-h-[360px] mx-2 text-center">
+        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white pt-4 shadow-md min-h-[360px] mx-2 text-center">
           <div class="flex flex-col items-center">
             <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain rounded mb-3" />
             <h3 class="text-sm font-semibold mb-2">${item.Title}</h3>
