@@ -1,5 +1,10 @@
 // scripts/main.js
 
+// Ensure light mode on load
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add('light-mode');
+});
+
 // Theme toggle logic
 document.querySelector('.theme-toggle')?.addEventListener('click', () => {
   document.body.classList.toggle('light-mode');
@@ -54,6 +59,7 @@ fetch(sheetURL)
     container.innerHTML = '';
     featuredWrapper.innerHTML = '';
 
+    // Featured Products
     const featuredItems = data.filter(d =>
       (d.Tags || d.Category || '').toLowerCase().includes('featured')
     );
@@ -74,10 +80,10 @@ fetch(sheetURL)
           </div>
         </div>
       `;
-
       featuredWrapper.appendChild(slide);
     });
 
+    // Swiper for Featured Section
     new Swiper('.mySwiper', {
       loop: true,
       autoplay: {
@@ -86,7 +92,7 @@ fetch(sheetURL)
       },
       pagination: {
         el: '.swiper-pagination',
-        clickable: true,
+        clickable: false,
       },
       navigation: false,
       slidesPerView: 2,
@@ -97,27 +103,34 @@ fetch(sheetURL)
       }
     });
 
+    // Trending Products
+    container.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-4');
+
     data
       .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
       .forEach(d => {
         const card = document.createElement('div');
-        card.className = 'deal-card';
+        card.className = 'deal-card bg-gray-100 dark:bg-gray-800 p-4 rounded shadow-md flex flex-col justify-between';
         card.innerHTML = `
-          <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
-          <h3>${d.Title}</h3>
-          <p>
-            ${d.Description?.slice(0, 80)}...
-            <button onclick="showPopup({ 
-              title: \`${d.Title}\`, 
-              description: \`${d.Description}\`, 
-              image: \`${d.Image}\`, 
-              price: \`${d.Price}\` 
-            })" class="text-blue-600 text-xs ml-1 underline">
-              Read More
-            </button>
-          </p>
-          <div class="price">₹${d.Price}</div>
-          <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
+          <div>
+            <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" class="w-full h-40 object-contain mb-4" />
+            <h3 class="text-base font-semibold mb-2">${d.Title}</h3>
+            <p>
+              ${d.Description?.slice(0, 80)}...
+              <button onclick="showPopup({ 
+                title: \`${d.Title}\`, 
+                description: \`${d.Description}\`, 
+                image: \`${d.Image}\`, 
+                price: \`${d.Price}\` 
+              })" class="text-blue-600 text-xs ml-1 underline">
+                Read More
+              </button>
+            </p>
+          </div>
+          <div>
+            <div class="price text-green-600 font-bold text-lg mb-2">₹${d.Price}</div>
+            <a href="${d.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+          </div>
         `;
         container.appendChild(card);
       });
