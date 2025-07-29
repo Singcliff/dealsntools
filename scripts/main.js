@@ -1,12 +1,16 @@
 // scripts/main.js
 
-// Theme toggle logic (default light mode)
-document.body.classList.add('light-mode');
+// Ensure light mode on load
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add('light-mode');
+});
+
+// Theme toggle logic
 document.querySelector('.theme-toggle')?.addEventListener('click', () => {
   document.body.classList.toggle('light-mode');
 });
 
-// Search filtering
+// Basic search filtering
 document.querySelector('.search-bar')?.addEventListener('input', (e) => {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll('.deal-card').forEach(card => {
@@ -15,7 +19,7 @@ document.querySelector('.search-bar')?.addEventListener('input', (e) => {
   });
 });
 
-// Create popup modal
+// Create modal container once
 let modal = document.createElement('div');
 modal.id = 'description-modal';
 modal.className = 'hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -30,19 +34,19 @@ modal.innerHTML = `
 `;
 document.body.appendChild(modal);
 
-// Popup handler
+// Modal logic
 function showPopup({ title, description, image, price }) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-desc').textContent = description;
   document.getElementById('modal-image').src = image;
-  document.getElementById('modal-price').textContent = `Price: ₹${price}`;
+  document.getElementById('modal-price').textContent = `Price: ?${price}`;
   modal.classList.remove('hidden');
 }
 document.getElementById('modal-close').addEventListener('click', () => {
   modal.classList.add('hidden');
 });
 
-// Fetch deals from Google Sheet
+// Fetch deals
 const sheetURL = 'https://opensheet.vercel.app/1qRXeav-go7JwQbpOhq6fszxlSUNxmjZ_e3Vu8jjZwiU/Deals';
 
 fetch(sheetURL)
@@ -55,7 +59,7 @@ fetch(sheetURL)
     container.innerHTML = '';
     featuredWrapper.innerHTML = '';
 
-    // Featured Products Only
+    // Featured Products
     const featuredItems = data.filter(d =>
       (d.Tags || d.Category || '').toLowerCase().includes('featured')
     );
@@ -64,72 +68,92 @@ fetch(sheetURL)
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
       slide.innerHTML = `
-        <div class="featured-card flex flex-col justify-between h-full bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 shadow-md">
-          <div class="flex flex-col items-center text-center h-full">
-            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-40 object-contain mb-4" />
-            <h3 class="text-lg font-semibold mb-2">${item.Title}</h3>
-            <p class="text-sm flex-grow">${item.Description}</p>
-            <div class="mt-2">
-              <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-              <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-            </div>
+        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-3 rounded shadow-md min-h-[360px] text-center">
+          <div>
+            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain rounded mb-3" />
+            <h3 class="text-sm font-semibold mb-2">${item.Title}</h3>
+            <p class="text-xs mb-3">${item.Description?.slice(0, 80)}...</p>
+          </div>
+          <div>
+            <div class="price text-green-600 font-bold text-base mb-2">?${item.Price}</div>
+            <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm">Buy Now</a>
           </div>
         </div>
       `;
       featuredWrapper.appendChild(slide);
     });
 
-    // Swiper config for Featured (4 per slide)
+    // Swiper for Featured Section
     new Swiper('.mySwiper', {
       loop: true,
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      slidesPerView: 1,
-      spaceBetween: 20,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: false,
+      },
+      navigation: false,
+      slidesPerView: 2,
+      spaceBetween: 15,
       breakpoints: {
         640: { slidesPerView: 2 },
-        1024: { slidesPerView: 4 }
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 }, // ? 4 per slide on desktop
       }
     });
 
-    // Trending deals (first 20 + load more)
-    const trendingItems = data.filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'));
-    let itemsToShow = 20;
+    // Trending Products with "Load More"
+    container.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-4');
+
+    let trendingItems = data.filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'));
+    let itemsPerPage = 20;
+    let currentIndex = 0;
 
     function renderTrending() {
-      container.innerHTML = '';
-      trendingItems.slice(0, itemsToShow).forEach(d => {
+      let nextItems = trendingItems.slice(currentIndex, currentIndex + itemsPerPage);
+      nextItems.forEach(d => {
         const card = document.createElement('div');
-        card.className = 'deal-card';
+        card.className = 'deal-card bg-gray-100 dark:bg-gray-800 p-4 rounded shadow-md flex flex-col justify-between';
         card.innerHTML = `
-          <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
-          <h3>${d.Title}</h3>
-          <p>
-            ${d.Description?.slice(0, 80)}...
-            <button onclick="showPopup({ 
-              title: \`${d.Title}\`, 
-              description: \`${d.Description}\`, 
-              image: \`${d.Image}\`, 
-              price: \`${d.Price}\` 
-            })" class="text-blue-600 text-xs ml-1 underline">
-              Read More
-            </button>
-          </p>
-          <div class="price">₹${d.Price}</div>
-          <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
+          <div>
+            <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" class="w-full h-40 object-contain mb-4" />
+            <h3 class="text-base font-semibold mb-2">${d.Title}</h3>
+            <p>
+              ${d.Description?.slice(0, 80)}...
+              <button onclick="showPopup({ 
+                title: \`${d.Title}\`, 
+                description: \`${d.Description}\`, 
+                image: \`${d.Image}\`, 
+                price: \`${d.Price}\` 
+              })" class="text-blue-600 text-xs ml-1 underline">
+                Read More
+              </button>
+            </p>
+          </div>
+          <div>
+            <div class="price text-green-600 font-bold text-lg mb-2">?${d.Price}</div>
+            <a href="${d.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+          </div>
         `;
         container.appendChild(card);
       });
+      currentIndex += itemsPerPage;
+
+      if (currentIndex >= trendingItems.length) {
+        loadMoreBtn.style.display = 'none';
+      }
     }
 
+    // Create Load More button
+    let loadMoreBtn = document.createElement('button');
+    loadMoreBtn.textContent = 'Load More';
+    loadMoreBtn.className = 'mt-6 mx-auto block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition';
+    loadMoreBtn.addEventListener('click', renderTrending);
+    container.parentElement.appendChild(loadMoreBtn);
+
+    // Initial render
     renderTrending();
-
-    // Load More button
-    let loadMoreBtn = document.querySelector('#load-more');
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', () => {
-        itemsToShow += 20;
-        renderTrending();
-      });
-    }
   })
   .catch(err => console.error('Failed to fetch deals:', err));
