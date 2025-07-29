@@ -248,5 +248,5 @@ body.light-mode .featured-box {
 .swiper-slide {
   display: flex;
   justify-content: center;
-  height: auto; padding: 1rem;
+  height: auto;
 }
