@@ -68,15 +68,15 @@ fetch(sheetURL)
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
       slide.innerHTML = `
-        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-md min-h-[450px]">
+        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-3 rounded shadow-md min-h-[360px] text-center">
           <div>
-            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-48 object-contain rounded mb-4" />
-            <h3 class="text-lg font-semibold mb-2">${item.Title}</h3>
-            <p class="text-sm mb-4">${item.Description?.slice(0, 100)}...</p>
+            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain rounded mb-3" />
+            <h3 class="text-sm font-semibold mb-2">${item.Title}</h3>
+            <p class="text-xs mb-3">${item.Description?.slice(0, 80)}...</p>
           </div>
           <div>
-            <div class="price text-green-600 font-bold text-lg mb-2">₹${item.Price}</div>
-            <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
+            <div class="price text-green-600 font-bold text-base mb-2">₹${item.Price}</div>
+            <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm">Buy Now</a>
           </div>
         </div>
       `;
@@ -96,19 +96,24 @@ fetch(sheetURL)
       },
       navigation: false,
       slidesPerView: 2,
-      spaceBetween: 20,
+      spaceBetween: 15,
       breakpoints: {
-        768: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
+        640: { slidesPerView: 2 },
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 }, // ✅ 4 per slide on desktop
       }
     });
 
-    // Trending Products
+    // Trending Products with "Load More"
     container.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-4');
 
-    data
-      .filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'))
-      .forEach(d => {
+    let trendingItems = data.filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'));
+    let itemsPerPage = 20;
+    let currentIndex = 0;
+
+    function renderTrending() {
+      let nextItems = trendingItems.slice(currentIndex, currentIndex + itemsPerPage);
+      nextItems.forEach(d => {
         const card = document.createElement('div');
         card.className = 'deal-card bg-gray-100 dark:bg-gray-800 p-4 rounded shadow-md flex flex-col justify-between';
         card.innerHTML = `
@@ -134,5 +139,21 @@ fetch(sheetURL)
         `;
         container.appendChild(card);
       });
+      currentIndex += itemsPerPage;
+
+      if (currentIndex >= trendingItems.length) {
+        loadMoreBtn.style.display = 'none';
+      }
+    }
+
+    // Create Load More button
+    let loadMoreBtn = document.createElement('button');
+    loadMoreBtn.textContent = 'Load More';
+    loadMoreBtn.className = 'mt-6 mx-auto block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition';
+    loadMoreBtn.addEventListener('click', renderTrending);
+    container.parentElement.appendChild(loadMoreBtn);
+
+    // Initial render
+    renderTrending();
   })
   .catch(err => console.error('Failed to fetch deals:', err));
