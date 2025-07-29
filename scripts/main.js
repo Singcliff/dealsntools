@@ -1,9 +1,7 @@
 // scripts/main.js
 
-// Ensure light mode on load
-document.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add('light-mode');
-});
+// Force light mode by default
+document.body.classList.add('light-mode');
 
 // Theme toggle logic
 document.querySelector('.theme-toggle')?.addEventListener('click', () => {
@@ -19,7 +17,7 @@ document.querySelector('.search-bar')?.addEventListener('input', (e) => {
   });
 });
 
-// Create modal container once
+// Create popup modal
 let modal = document.createElement('div');
 modal.id = 'description-modal';
 modal.className = 'hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -27,14 +25,14 @@ modal.innerHTML = `
   <div class="bg-white dark:bg-gray-900 text-black dark:text-white rounded-lg p-6 max-w-lg w-full shadow-xl relative">
     <h2 class="text-lg font-semibold mb-2" id="modal-title"></h2>
     <img id="modal-image" src="" alt="" class="w-full h-40 object-contain mb-4" />
-    <p class="text-sm mb-2" id="modal-price"></p>
+    <p class="text-sm mb-2 font-bold" id="modal-price"></p>
     <p class="text-sm mb-4" id="modal-desc"></p>
     <button class="absolute top-2 right-3 text-gray-500 hover:text-black dark:hover:text-white text-xl" id="modal-close">×</button>
   </div>
 `;
 document.body.appendChild(modal);
 
-// Modal logic
+// Popup handler
 function showPopup({ title, description, image, price }) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-desc').textContent = description;
@@ -59,101 +57,89 @@ fetch(sheetURL)
     container.innerHTML = '';
     featuredWrapper.innerHTML = '';
 
-    // Featured Products
-    const featuredItems = data
-      .filter(d => (d.Tags || d.Category || '').toLowerCase().includes('featured'))
-      .slice(0, 8); // ✅ Show only first 8 featured products
+    // Featured items
+    const featuredItems = data.filter(d =>
+      (d.Tags || d.Category || '').toLowerCase().includes('featured')
+    );
 
     featuredItems.forEach(item => {
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
       slide.innerHTML = `
-        <div class="featured-card flex flex-col justify-between bg-gray-100 dark:bg-gray-800 text-black dark:text-white pt-4 shadow-md min-h-[360px] mx-2 text-center">
-          <div class="flex flex-col items-center">
-            <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain rounded mb-3" />
-            <h3 class="text-sm font-semibold mb-2">${item.Title}</h3>
-            <p class="text-xs mb-3">${item.Description?.slice(0, 80)}...</p>
-          </div>
-          <div>
-            <div class="price text-green-600 font-bold text-base mb-2">₹${item.Price}</div>
+        <div class="featured-card bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 shadow-md flex flex-col items-center justify-between mx-auto" style="height: 350px; max-width: 250px;">
+          <img src="${item.Image}" alt="${item.Title}" loading="lazy" class="w-full h-32 object-contain mb-4" />
+          <h3 class="text-md font-semibold text-center mb-2">${item.Title}</h3>
+          <p class="text-xs text-center flex-grow overflow-hidden">${item.Description}</p>
+          <div class="mt-2">
+            <div class="price text-green-600 font-bold text-sm mb-2 text-center">₹${item.Price}</div>
             <a href="${item.Link}" target="_blank" class="btn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm">Buy Now</a>
           </div>
-        </div>        
+        </div>
       `;
       featuredWrapper.appendChild(slide);
     });
 
-    // Swiper for Featured Section
+    // Featured slider init
     new Swiper('.mySwiper', {
       loop: true,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: false,
-      },
+      autoplay: { delay: 4000, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: false },
       navigation: false,
-      slidesPerView: 2,
-      spaceBetween: 15,
+      slidesPerView: 4,
+      spaceBetween: 20,
       breakpoints: {
-        640: { slidesPerView: 2 },
-        768: { slidesPerView: 3 },
-        1024: { slidesPerView: 4 }, // ✅ 4 per slide on desktop
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 4 },
       }
     });
 
-    // Trending Products with "Load More"
-    container.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-4');
-
+    // Trending items
     let trendingItems = data.filter(d => !(d.Tags || d.Category || '').toLowerCase().includes('featured'));
-    let itemsPerPage = 20;
-    let currentIndex = 0;
+    let displayedCount = 0;
+    const itemsPerLoad = 20;
 
-    function renderTrending() {
-      let nextItems = trendingItems.slice(currentIndex, currentIndex + itemsPerPage);
+    function loadMoreTrending() {
+      const nextItems = trendingItems.slice(displayedCount, displayedCount + itemsPerLoad);
       nextItems.forEach(d => {
         const card = document.createElement('div');
-        card.className = 'deal-card bg-gray-100 dark:bg-gray-800 p-4 rounded shadow-md flex flex-col justify-between';
+        card.className = 'deal-card';
         card.innerHTML = `
-          <div>
-            <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" class="w-full h-40 object-contain mb-4" />
-            <h3 class="text-base font-semibold mb-2">${d.Title}</h3>
-            <p>
-              ${d.Description?.slice(0, 80)}...
-              <button onclick="showPopup({ 
-                title: \`${d.Title}\`, 
-                description: \`${d.Description}\`, 
-                image: \`${d.Image}\`, 
-                price: \`${d.Price}\` 
-              })" class="text-blue-600 text-xs ml-1 underline">
-                Read More
-              </button>
-            </p>
-          </div>
-          <div>
-            <div class="price text-green-600 font-bold text-lg mb-2">₹${d.Price}</div>
-            <a href="${d.Link}" target="_blank" class="btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Buy Now</a>
-          </div>
+          <img src="${d.Image || '#'}" alt="${d.Title}" loading="lazy" />
+          <h3>${d.Title}</h3>
+          <p>
+            ${d.Description?.slice(0, 80)}...
+            <button onclick="showPopup({ 
+              title: \`${d.Title}\`, 
+              description: \`${d.Description}\`, 
+              image: \`${d.Image}\`, 
+              price: \`${d.Price}\` 
+            })" class="text-blue-600 text-xs ml-1 underline">
+              Read More
+            </button>
+          </p>
+          <div class="price">₹${d.Price}</div>
+          <a href="${d.Link}" target="_blank" class="btn">Buy Now</a>
         `;
         container.appendChild(card);
       });
-      currentIndex += itemsPerPage;
+      displayedCount += nextItems.length;
 
-      if (currentIndex >= trendingItems.length) {
-        loadMoreBtn.style.display = 'none';
+      if (displayedCount >= trendingItems.length) {
+        document.getElementById('load-more')?.remove();
       }
     }
 
-    // Create Load More button
-    let loadMoreBtn = document.createElement('button');
-    loadMoreBtn.textContent = 'Load More';
-    loadMoreBtn.className = 'mt-6 mx-auto block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition';
-    loadMoreBtn.addEventListener('click', renderTrending);
-    container.parentElement.appendChild(loadMoreBtn);
+    // Load initial 20
+    loadMoreTrending();
 
-    // Initial render
-    renderTrending();
+    // Add load more button
+    if (trendingItems.length > itemsPerLoad) {
+      const loadMoreBtn = document.createElement('button');
+      loadMoreBtn.id = 'load-more';
+      loadMoreBtn.textContent = 'Load More';
+      loadMoreBtn.className = 'btn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition mt-4';
+      loadMoreBtn.addEventListener('click', loadMoreTrending);
+      container.parentElement.appendChild(loadMoreBtn);
+    }
   })
   .catch(err => console.error('Failed to fetch deals:', err));
