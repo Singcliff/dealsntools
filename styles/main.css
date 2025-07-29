@@ -56,7 +56,11 @@ body.light-mode {
   font-size: 1rem;
 }
 
-.featured-deal, .deals-wrapper, .newsletter-box {
+.featured-deal {
+  padding: 1rem;
+  text-align: center;
+}
+.deals-wrapper, .newsletter-box {
   padding: 2rem;
   text-align: center;
 }
